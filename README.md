@@ -58,8 +58,8 @@ Type=simple
 ExecStart=/usr/local/bin/picohttpd -port 80 -answer "OK"
 Restart=always
 RestartSec=2
-User=nobody
-Group=nobody
+#User=nobody
+#Group=nobody
 
 [Install]
 WantedBy=multi-user.target
