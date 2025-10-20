@@ -1,0 +1,30 @@
+name: Build picohttpd for Rocky Linux/RHEL/CentOS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   # GitHub Actions runs Ubuntu, but Go produces Linux-compatible binary
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Build Linux x86_64 binary
+        run: |
+          # Build binary for Linux x86_64 (Rocky Linux, RHEL, CentOS)
+          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o picohttpd picohttpd.go
+          file picohttpd
+          ls -lh picohttpd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: picohttpd-binary
+          path: picohttpd
