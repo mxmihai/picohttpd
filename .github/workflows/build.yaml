@@ -18,9 +18,14 @@ jobs:
 
       - name: Build Linux x86_64 binary
         run: |
+          # Remove old build folder to ensure fresh binary
+          rm -rf build
           mkdir -p build
+          
           # Build binary for Linux x86_64 (Rocky Linux, RHEL, CentOS)
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags '-static'" -o build/picohttpd picohttpd.go
+
+          # Check binary info
           file build/picohttpd
           ls -lh build/
 
