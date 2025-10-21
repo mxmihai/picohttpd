@@ -37,6 +37,9 @@ It’s designed for **diagnostics, automation scripts, and health checks** — l
 # Execute a command and return its output
 ./picohttpd -answer "cmd:uptime"
 
+# Execute any bash command and return its output
+./picohttpd -answer "cmd:echo Hello from $(hostname)"
+
 # Display version
 ./picohttpd -v
 
