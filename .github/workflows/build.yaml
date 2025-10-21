@@ -2,11 +2,6 @@ name: Build picohttpd for Rocky Linux/RHEL/CentOS
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version tag (example: v1.2.0)'
-        required: true
-        default: 'v1.1.0'
 
 jobs:
   build:
@@ -57,25 +52,8 @@ jobs:
           echo "Binary details:"
           file build/picohttpd
 
-      - name: Create git tag if missing
-        run: |
-          set -e
-          VERSION=${{ github.event.inputs.version }}
-          if git rev-parse "$VERSION" >/dev/null 2>&1; then
-            echo "Tag $VERSION already exists."
-          else
-            echo "Creating tag $VERSION..."
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git tag -a "$VERSION" -m "Release $VERSION"
-            git push origin "$VERSION"
-          fi
-
-      - name: Create GitHub Release and attach binary
-        uses: softprops/action-gh-release@v2
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          name: picohttpd ${{ github.event.inputs.version }}
-          files: build/picohttpd
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: picohttpd-binary
+          path: build/picohttpd
