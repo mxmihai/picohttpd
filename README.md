@@ -58,7 +58,7 @@ It’s designed for **diagnostics, automation scripts, and health checks** — l
 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o picohttpd picohttpd.go
 ```
 
-- For convenience, **pre-built Linux binaries** are available in the `build` folder (compiled for Linux x86_64, compatible with Rocky Linux, RHEL, CentOS, Debian, Ubuntu).
+- Check the **pre-built Linux binaries** available in the [Latest Release](https://github.com/mxmihai/picohttpd/releases) (compiled for Linux x86_64, compatible with Rocky Linux, RHEL, CentOS, Debian, Ubuntu). 
 
 ---
 
