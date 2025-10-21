@@ -11,35 +11,46 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify picohttpd.go exists
+        run: |
+          echo "Repository root contents:"
+          ls -lh
+          if [ ! -f picohttpd.go ]; then
+            echo "Error: picohttpd.go not found in repo root!"
+            exit 1
+          fi
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.21'
 
-      - name: Verify source
+      - name: Go environment
         run: |
-          echo "Repository root files:"
-          ls -lh
-          if [ ! -f picohttpd.go ]; then
-            echo "Error: picohttpd.go not found!"
-            exit 1
-          fi
+          echo "Go toolchain details:"
+          go version
+          go env
 
       - name: Build Linux x86_64 binary
         run: |
-          set -e
+          set -e  # stop if any command fails
+          echo "Starting build process..."
           
-          # Remove old build folder to ensure fresh binary
+          # Clean and recreate old build folder to ensure fresh binary
           rm -rf build
           mkdir -p build
-          
-          # Build binary for Linux x86_64 (Rocky Linux, RHEL, CentOS)
+
+          # Force module mode off (we don't use go.mod)
           export GO111MODULE=off
+          
+          # Build fully static binary for Linux x86_64 (Rocky Linux, RHEL, CentOS)
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags '-static'" -o build/picohttpd picohttpd.go
 
-          # Check binary info
-          file build/picohttpd
+          echo "Build completed. Contents of build/:"
           ls -lh build/
+
+          echo "Binary details:"
+          file build/picohttpd
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
