@@ -19,7 +19,7 @@ jobs:
       - name: Build Linux x86_64 binary
         run: |
           # Build binary for Linux x86_64 (Rocky Linux, RHEL, CentOS)
-          GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o picohttpd picohttpd.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w -extldflags '-static'" -o picohttpd picohttpd.go
           file picohttpd
           ls -lh picohttpd
 
