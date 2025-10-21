@@ -73,11 +73,11 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/picohttpd -port 80 -path / -answer "OK"
+ExecStart=/usr/local/bin/picohttpd -port 8080 -path / -answer "OK"
 Restart=always
 RestartSec=2
-#User=nobody
-#Group=nobody
+User=nobody
+Group=nobody
 
 [Install]
 WantedBy=multi-user.target
